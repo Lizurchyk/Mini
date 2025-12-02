@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Mini App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .status {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+        .success {
+            color: #4ade80;
+            font-size: 24px;
+            margin: 20px 0;
+        }
+        .error {
+            color: #f87171;
+            font-size: 24px;
+            margin: 20px 0;
+        }
+        button {
+            background: #0088cc;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #006699;
+        }
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        .channel-link {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-decoration: none;
+            color: white;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Проверка подписки</h1>
+        
+        <div class="status">
+            <div id="loading">Проверяем подписку...</div>
+            
+            <div id="subscribed" class="hidden">
+                <div class="success">✅ Вы подписаны на канал!</div>
+                <p>Доступ к контенту открыт</p>
+                <button onclick="showContent()">Показать контент</button>
+            </div>
+            
+            <div id="notSubscribed" class="hidden">
+                <div class="error">❌ Вы не подписаны на канал</div>
+                <p>Для доступа к приложению необходимо подписаться</p>
+                <a href="https://t.me/your_channel_username" target="_blank" class="channel-link">
+                    📢 Перейти в канал
+                </a>
+                <br>
+                <button onclick="checkSubscription()">Проверить снова</button>
+            </div>
+        </div>
+        
+        <div id="content" class="hidden">
+            <h2>🎉 Добро пожаловать!</h2>
+            <p>Это ваш эксклюзивный контент для подписчиков</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
