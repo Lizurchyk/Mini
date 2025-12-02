@@ -16,295 +16,151 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
-            color: #333;
         }
         
         .container {
-            max-width: 800px;
-            margin: 0 auto;
             background: white;
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
         
-        h1 {
+        .header {
             text-align: center;
-            color: #333;
             margin-bottom: 30px;
-            font-size: 28px;
         }
         
-        .info-card {
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .user-info {
             background: #f8f9fa;
             border-radius: 15px;
             padding: 25px;
-            margin-bottom: 25px;
-            border-left: 5px solid #667eea;
+            margin-bottom: 20px;
         }
         
         .info-item {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            padding: 12px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
         }
         
-        .info-icon {
-            width: 40px;
-            height: 40px;
-            background: #667eea;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            color: white;
-            font-weight: bold;
+        .info-item:last-child {
+            border-bottom: none;
         }
         
-        .info-content {
-            flex: 1;
-        }
-        
-        .info-label {
-            font-size: 12px;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 3px;
-        }
-        
-        .info-value {
-            font-size: 18px;
+        .label {
             font-weight: 600;
+            color: #495057;
+        }
+        
+        .value {
             color: #333;
+            font-weight: 500;
             word-break: break-all;
+            text-align: right;
+            max-width: 60%;
         }
         
-        .json-viewer {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 30px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            overflow-x: auto;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        
-        .json-key {
-            color: #9cdcfe;
-        }
-        
-        .json-string {
-            color: #ce9178;
-        }
-        
-        .json-number {
-            color: #b5cea8;
-        }
-        
-        .json-boolean {
-            color: #569cd6;
-        }
-        
-        .json-null {
-            color: #569cd6;
-        }
-        
-        .raw-data {
-            margin-top: 30px;
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-        }
-        
-        .raw-data h3 {
-            margin-bottom: 15px;
-            color: #333;
-        }
-        
-        .copy-btn {
-            background: #667eea;
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
+            padding: 15px 30px;
+            border-radius: 12px;
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            margin: 10px 0;
-            transition: background 0.3s;
-            display: block;
             width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
         
-        .copy-btn:hover {
-            background: #5a67d8;
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
         
-        .copy-btn:active {
-            transform: translateY(1px);
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 14px;
+            display: none;
         }
         
         .avatar {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             margin: 0 auto 20px;
-            display: block;
-            border: 5px solid #667eea;
-            object-fit: cover;
-        }
-        
-        .username {
-            text-align: center;
-            font-size: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
             font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .user-id {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-        }
-        
-        .status {
-            text-align: center;
-            padding: 10px;
-            background: #e8f5e9;
-            color: #2e7d32;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-        
-        .error {
-            text-align: center;
-            padding: 20px;
-            background: #ffebee;
-            color: #c62828;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        
-        .section-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin: 25px 0 15px;
-            color: #333;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #667eea;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>👤 Информация о пользователе</h1>
-        
-        <div id="loading" class="status">
-            ⏳ Загружаем данные пользователя...
+        <div class="header">
+            <div class="avatar" id="userAvatar">
+                ?
+            </div>
+            <h1>Информация о пользователе</h1>
+            <p>Данные получены через Telegram WebApp API</p>
         </div>
         
-        <div id="userInfo" style="display: none;">
-            <!-- Аватар и основная информация -->
-            <div class="info-card">
-                <img id="userAvatar" src="" alt="Avatar" class="avatar">
-                <div id="userName" class="username"></div>
-                <div id="userId" class="user-id"></div>
+        <div class="user-info">
+            <div class="info-item">
+                <span class="label">ID пользователя:</span>
+                <span class="value" id="userId">Загрузка...</span>
             </div>
-            
-            <!-- Подробная информация -->
-            <h3 class="section-title">📋 Подробная информация</h3>
-            <div class="info-card">
-                <div class="info-item">
-                    <div class="info-icon">ID</div>
-                    <div class="info-content">
-                        <div class="info-label">Telegram ID</div>
-                        <div id="infoId" class="info-value"></div>
-                    </div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-icon">@</div>
-                    <div class="info-content">
-                        <div class="info-label">Username</div>
-                        <div id="infoUsername" class="info-value"></div>
-                    </div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-icon">👤</div>
-                    <div class="info-content">
-                        <div class="info-label">Имя</div>
-                        <div id="infoFirstName" class="info-value"></div>
-                    </div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-icon">👥</div>
-                    <div class="info-content">
-                        <div class="info-label">Фамилия</div>
-                        <div id="infoLastName" class="info-value"></div>
-                    </div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-icon">🌐</div>
-                    <div class="info-content">
-                        <div class="info-label">Язык</div>
-                        <div id="infoLanguage" class="info-value"></div>
-                    </div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-icon">📱</div>
-                    <div class="info-content">
-                        <div class="info-label">Платформа</div>
-                        <div id="infoPlatform" class="info-value"></div>
-                    </div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-icon">⚡</div>
-                    <div class="info-content">
-                        <div class="info-label">Версия WebApp</div>
-                        <div id="infoVersion" class="info-value"></div>
-                    </div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-icon">💬</div>
-                    <div class="info-content">
-                        <div class="info-label">Тема</div>
-                        <div id="infoTheme" class="info-value"></div>
-                    </div>
-                </div>
+            <div class="info-item">
+                <span class="label">Имя пользователя:</span>
+                <span class="value" id="username">Загрузка...</span>
             </div>
-            
-            <!-- Все данные в JSON -->
-            <h3 class="section-title">📊 Все данные в JSON</h3>
-            <div class="raw-data">
-                <pre id="jsonOutput" class="json-viewer"></pre>
-                <button onclick="copyToClipboard()" class="copy-btn">📋 Скопировать JSON</button>
+            <div class="info-item">
+                <span class="label">Имя и фамилия:</span>
+                <span class="value" id="fullName">Загрузка...</span>
             </div>
-            
-            <!-- Кнопка для обновления -->
-            <button onclick="loadUserInfo()" class="copy-btn" style="background: #48bb78;">
-                🔄 Обновить данные
-            </button>
+            <div class="info-item">
+                <span class="label">Язык интерфейса:</span>
+                <span class="value" id="language">Загрузка...</span>
+            </div>
         </div>
         
-        <div id="error" class="error" style="display: none;">
-            Произошла ошибка при загрузке данных
+        <button class="btn" id="refreshBtn">
+            Обновить данные
+        </button>
+        
+        <div class="warning" id="warning">
+            Приложение запущено не в Telegram. Данные не могут быть получены.
         </div>
     </div>
 
