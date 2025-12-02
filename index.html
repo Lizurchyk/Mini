@@ -1,47 +1,183 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <title>Проверка подписки @SimpleDLC</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-    <div id="channels"></div>
+    <h2>Проверка подписки на канал @SimpleDLC</h2>
+    
+    <div>
+        <p><strong>Ваш ID:</strong></p>
+        <p id="userId">Загрузка...</p>
+        
+        <p><strong>Статус подписки:</strong></p>
+        <p id="subscriptionStatus">Проверка...</p>
+        
+        <p><strong>Подписчиков в канале:</strong></p>
+        <p id="subscriberCount">-</p>
+    </div>
+    
+    <div>
+        <button onclick="checkSubscription()">Проверить подписку</button>
+        <button onclick="openChannel()">Перейти в канал</button>
+        <button onclick="getChannelStats()">Обновить статистику</button>
+    </div>
+    
+    <p id="lastUpdate"></p>
+    
+    <div id="loader" style="display:none;">
+        <p>Загрузка...</p>
+    </div>
 
     <script>
-        const BOT_TOKEN = '5718405917:AAEtLH8r_FEh98utTX7-1iSRBBifbMJ0REY'; // Замени на токен бота
-        const tg = window.Telegram.WebApp;
+        // ВАЖНО: Замените на свой токен бота
+        const BOT_TOKEN = 'ВАШ_ТОКЕН_БОТА';
+        const CHANNEL_USERNAME = '@SimpleDLC';
         
-        tg.ready();
-        tg.expand();
+        let telegramUser = null;
         
-        async function getBotChats() {
+        // Функция для показа/скрытия лоадера
+        function showLoader(show) {
+            document.getElementById('loader').style.display = show ? 'block' : 'none';
+        }
+        
+        // Инициализация Telegram Web App
+        function initTelegram() {
+            const tg = window.Telegram.WebApp;
+            
+            // Получаем данные пользователя
+            telegramUser = tg.initDataUnsafe?.user;
+            
+            if (telegramUser) {
+                document.getElementById('userId').textContent = telegramUser.id;
+            } else {
+                document.getElementById('userId').textContent = 'Не удалось получить ID';
+                document.getElementById('subscriptionStatus').textContent = 
+                    'Откройте через Telegram бота';
+            }
+            
+            tg.expand();
+        }
+        
+        // Проверка подписки пользователя
+        async function checkSubscription() {
+            if (!telegramUser) {
+                document.getElementById('subscriptionStatus').textContent = 
+                    'Сначала авторизуйтесь в Telegram';
+                return;
+            }
+            
+            showLoader(true);
+            
             try {
-                // Получаем список чатов, где бот администратор
-                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getChats`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        // Получаем все каналы и супергруппы
-                        // Можно использовать: "getChatAdministrators" для проверки админства в конкретном чате
-                    })
-                });
+                // Проверяем, является ли пользователь участником канала
+                const response = await fetch(
+                    `https://api.telegram.org/bot${BOT_TOKEN}/getChatMember`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            chat_id: CHANNEL_USERNAME,
+                            user_id: telegramUser.id
+                        })
+                    }
+                );
                 
                 const data = await response.json();
                 
-                // НО: Метод getChats требует user_id, а не bot_id
-                // Лучше использовать getChatAdministrators для каждого чата
-                // ИЛИ получить список через getUpdates
-                
-                document.getElementById('channels').innerHTML = 
-                    'Получение данных... (см. консоль)';
-                console.log(data);
-                
+                if (data.ok) {
+                    const status = data.result.status;
+                    
+                    // Статусы участника канала
+                    const statusMap = {
+                        'creator': 'Создатель канала',
+                        'administrator': 'Администратор',
+                        'member': 'Подписан',
+                        'restricted': 'Ограниченный доступ',
+                        'left': 'Не подписан',
+                        'kicked': 'Заблокирован'
+                    };
+                    
+                    const statusText = statusMap[status] || status;
+                    document.getElementById('subscriptionStatus').textContent = statusText;
+                    
+                    // Подсветка статуса
+                    if (status === 'left' || status === 'kicked') {
+                        document.getElementById('subscriptionStatus').style.color = 'red';
+                    } else {
+                        document.getElementById('subscriptionStatus').style.color = 'green';
+                    }
+                    
+                } else {
+                    document.getElementById('subscriptionStatus').textContent = 
+                        'Ошибка: ' + (data.description || 'Неизвестная ошибка');
+                }
             } catch (error) {
-                document.getElementById('channels').innerHTML = 
-                    'Ошибка: ' + error.message;
+                document.getElementById('subscriptionStatus').textContent = 
+                    'Ошибка соединения';
+                console.error('Error:', error);
+            }
+            
+            updateTime();
+            showLoader(false);
+        }
+        
+        // Получение статистики канала
+        async function getChannelStats() {
+            showLoader(true);
+            
+            try {
+                const response = await fetch(
+                    `https://api.telegram.org/bot${BOT_TOKEN}/getChatMembersCount?chat_id=${CHANNEL_USERNAME}`
+                );
+                const data = await response.json();
+                
+                if (data.ok) {
+                    document.getElementById('subscriberCount').textContent = data.result;
+                } else {
+                    document.getElementById('subscriberCount').textContent = 'Ошибка';
+                }
+            } catch (error) {
+                document.getElementById('subscriberCount').textContent = 'Ошибка сети';
+            }
+            
+            updateTime();
+            showLoader(false);
+        }
+        
+        // Функция открытия канала
+        function openChannel() {
+            const tg = window.Telegram.WebApp;
+            if (tg.openTelegramLink) {
+                tg.openTelegramLink(`https://t.me/${CHANNEL_USERNAME.substring(1)}`);
+            } else {
+                window.open(`https://t.me/${CHANNEL_USERNAME.substring(1)}`, '_blank');
             }
         }
         
-        getBotChats();
+        // Обновление времени
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = 
+                'Обновлено: ' + now.toLocaleTimeString();
+        }
+        
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            initTelegram();
+            getChannelStats();
+            
+            // Автоматически проверяем подписку через 1 секунду
+            setTimeout(() => {
+                if (telegramUser) {
+                    checkSubscription();
+                }
+            }, 1000);
+        });
     </script>
 </body>
 </html>
