@@ -3,98 +3,308 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Mini App</title>
+    <title>Telegram User Info</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            color: white;
+            padding: 20px;
+            color: #333;
         }
+        
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
-            text-align: center;
-        }
-        .status {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
+            background: white;
+            border-radius: 20px;
             padding: 30px;
-            margin: 20px 0;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
-        .success {
-            color: #4ade80;
-            font-size: 24px;
-            margin: 20px 0;
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
         }
-        .error {
-            color: #f87171;
-            font-size: 24px;
-            margin: 20px 0;
+        
+        .info-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
         }
-        button {
-            background: #0088cc;
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .info-content {
+            flex: 1;
+        }
+        
+        .info-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 3px;
+        }
+        
+        .info-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            word-break: break-all;
+        }
+        
+        .json-viewer {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .json-key {
+            color: #9cdcfe;
+        }
+        
+        .json-string {
+            color: #ce9178;
+        }
+        
+        .json-number {
+            color: #b5cea8;
+        }
+        
+        .json-boolean {
+            color: #569cd6;
+        }
+        
+        .json-null {
+            color: #569cd6;
+        }
+        
+        .raw-data {
+            margin-top: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .raw-data h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .copy-btn {
+            background: #667eea;
             color: white;
             border: none;
             padding: 12px 24px;
             border-radius: 10px;
             font-size: 16px;
             cursor: pointer;
-            margin: 10px;
+            margin: 10px 0;
             transition: background 0.3s;
+            display: block;
+            width: 100%;
         }
-        button:hover {
-            background: #006699;
+        
+        .copy-btn:hover {
+            background: #5a67d8;
         }
-        button:disabled {
-            background: #666;
-            cursor: not-allowed;
+        
+        .copy-btn:active {
+            transform: translateY(1px);
         }
-        .channel-link {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px 20px;
-            border-radius: 8px;
-            margin: 15px 0;
-            text-decoration: none;
-            color: white;
+        
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: block;
+            border: 5px solid #667eea;
+            object-fit: cover;
         }
-        .hidden {
-            display: none;
+        
+        .username {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .user-id {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .status {
+            text-align: center;
+            padding: 10px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .error {
+            text-align: center;
+            padding: 20px;
+            background: #ffebee;
+            color: #c62828;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 25px 0 15px;
+            color: #333;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🔐 Проверка подписки</h1>
+        <h1>👤 Информация о пользователе</h1>
         
-        <div class="status">
-            <div id="loading">Проверяем подписку...</div>
-            
-            <div id="subscribed" class="hidden">
-                <div class="success">✅ Вы подписаны на канал!</div>
-                <p>Доступ к контенту открыт</p>
-                <button onclick="showContent()">Показать контент</button>
-            </div>
-            
-            <div id="notSubscribed" class="hidden">
-                <div class="error">❌ Вы не подписаны на канал</div>
-                <p>Для доступа к приложению необходимо подписаться</p>
-                <a href="https://t.me/your_channel_username" target="_blank" class="channel-link">
-                    📢 Перейти в канал
-                </a>
-                <br>
-                <button onclick="checkSubscription()">Проверить снова</button>
-            </div>
+        <div id="loading" class="status">
+            ⏳ Загружаем данные пользователя...
         </div>
         
-        <div id="content" class="hidden">
-            <h2>🎉 Добро пожаловать!</h2>
-            <p>Это ваш эксклюзивный контент для подписчиков</p>
+        <div id="userInfo" style="display: none;">
+            <!-- Аватар и основная информация -->
+            <div class="info-card">
+                <img id="userAvatar" src="" alt="Avatar" class="avatar">
+                <div id="userName" class="username"></div>
+                <div id="userId" class="user-id"></div>
+            </div>
+            
+            <!-- Подробная информация -->
+            <h3 class="section-title">📋 Подробная информация</h3>
+            <div class="info-card">
+                <div class="info-item">
+                    <div class="info-icon">ID</div>
+                    <div class="info-content">
+                        <div class="info-label">Telegram ID</div>
+                        <div id="infoId" class="info-value"></div>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">@</div>
+                    <div class="info-content">
+                        <div class="info-label">Username</div>
+                        <div id="infoUsername" class="info-value"></div>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">👤</div>
+                    <div class="info-content">
+                        <div class="info-label">Имя</div>
+                        <div id="infoFirstName" class="info-value"></div>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">👥</div>
+                    <div class="info-content">
+                        <div class="info-label">Фамилия</div>
+                        <div id="infoLastName" class="info-value"></div>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">🌐</div>
+                    <div class="info-content">
+                        <div class="info-label">Язык</div>
+                        <div id="infoLanguage" class="info-value"></div>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">📱</div>
+                    <div class="info-content">
+                        <div class="info-label">Платформа</div>
+                        <div id="infoPlatform" class="info-value"></div>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">⚡</div>
+                    <div class="info-content">
+                        <div class="info-label">Версия WebApp</div>
+                        <div id="infoVersion" class="info-value"></div>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">💬</div>
+                    <div class="info-content">
+                        <div class="info-label">Тема</div>
+                        <div id="infoTheme" class="info-value"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Все данные в JSON -->
+            <h3 class="section-title">📊 Все данные в JSON</h3>
+            <div class="raw-data">
+                <pre id="jsonOutput" class="json-viewer"></pre>
+                <button onclick="copyToClipboard()" class="copy-btn">📋 Скопировать JSON</button>
+            </div>
+            
+            <!-- Кнопка для обновления -->
+            <button onclick="loadUserInfo()" class="copy-btn" style="background: #48bb78;">
+                🔄 Обновить данные
+            </button>
+        </div>
+        
+        <div id="error" class="error" style="display: none;">
+            Произошла ошибка при загрузке данных
         </div>
     </div>
 
